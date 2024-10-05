@@ -19,3 +19,4 @@ SPRING_CLOUD_CONSUL_PORT = # YOUR SV PORT
 FINISHE . 
 :)
 *YOUR PVC CREATE AUTOMATIC*
+# You should have 2 pv  Becaues if Consul pods get down another is continue running 
