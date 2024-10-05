@@ -1,0 +1,14 @@
+# PV 
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: consul
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    path: # YOUR PATH
+    server: # YOUR NFS SERVRE

@@ -1,0 +1,27 @@
+# CONFIG MAP 
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: consul-config-0
+  namespace: shared
+data:
+  consul-config.hcl: |
+    # Consul configuration file for OKD deployment
+
+    datacenter = "dc1"
+    data_dir = "/consul/data"
+
+    # Network configurations
+    bind_addr = "0.0.0.0"  # Listen on all interfaces
+    client_addr = "0.0.0.0" # Allow external clients to connect
+
+    # Enable the UI
+    ui = true
+
+    # Enable ACL (Access Control Lists)
+    acl {
+      enabled = true
+      default_policy = "allow"  # Allow all by default
+      down_policy = "extend-cache"
+      enable_token_persistence = true  # Enable token persistence
+    }

@@ -1,0 +1,35 @@
+# SVC 
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul
+  namespace: shared
+spec:
+  selector:
+    app: consul
+ports:
+- name: http
+  protocol: TCP
+  port: 8500
+  targetPort: 8500
+- name: dns
+  protocol: TCP
+  port: 8600
+  targetPort: 8600
+- name: raft
+  protocol: TCP
+  port: 8300
+  targetPort: 8300
+- name: gossip
+  protocol: TCP
+  port: 8301
+  targetPort: 8301
+- name: gossip2
+  protocol: TCP
+  port: 8302
+  targetPort: 8302
+- name: allport
+  protocol: TCP
+  port: 8400
+  targetPort: 8400
+  ClysterType: none

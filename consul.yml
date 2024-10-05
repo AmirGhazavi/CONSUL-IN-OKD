@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: consul
+  namespace: shared
+spec:
+  serviceName: consul
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consul
+  template:
+    metadata:
+      labels:
+        app: consul
+    spec:
+      serviceAccountName: anyuid # For Access Root in Terminal
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: consul
+        image: '192.168.1.220:8085/repository/soha/consul:1.15.4'
+        args:
+        - agent
+        - '-server'
+        - '-bootstrap-expect=1'
+        - '-client=0.0.0.0'
+        - '-ui'
+        - '-bind=$(POD_IP)'
+        - '-advertise=$(POD_IP)'
+        - '-data-dir=/consul/data'
+        - '-retry-join=consul.shared.svc.cluster.local'
+        - '-config-file=/consul/config/consul-config.hcl'
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: CONSUL_ENABLE_ACLS
+          value: "true"
+        ports:
+        - containerPort: 8500
+          name: http
+        - containerPort: 8600
+          name: dns
+        - containerPort: 8301
+          name: gossip-lan
+        - containerPort: 8302
+          name: gossip-wan
+        - containerPort: 8300
+          name: raft
+        - containerPort: 8400
+          name: all-port
+        volumeMounts:
+        - name: consul-data
+          mountPath: /consul/data
+        - name: consul-config
+          mountPath: /consul/config
+      volumes:
+      - name: consul-config
+        configMap:
+          name: consul-config
+  volumeClaimTemplates:
+  - metadata:
+      name: consul-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
