@@ -18,7 +18,7 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: consul
-        image: '192.168.1.220:8085/repository/soha/consul:1.15.4'
+        image: 'consul:1.15.4'
         args:
         - agent
         - '-server'
